@@ -1,0 +1,350 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Chat Application API",
+        "description": "API for a real-time chat application.",
+        "contact": {
+            "name": "Your Name",
+            "email": "your.email@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/users/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User login",
+                "operationId": "loginUser",
+                "requestBody": {
+                    "description": "Submit the login data using a form.",
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "The user's email address.",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "description": "The user's password.",
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "your_access_token_here"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid login information"
+                    }
+                }
+            }
+        },
+        "/api/messages": {
+            "get": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Get all messages for the authenticated user",
+                "operationId": "getUserMessages",
+                "responses": {
+                    "200": {
+                        "description": "Messages retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Message"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "No messages found for this user"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Send a message",
+                "description": "Send a message to a user in a conversation.",
+                "operationId": "34b7700f68fe664d5c64436d467777bf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "conversation_id",
+                                    "receiver_id",
+                                    "body"
+                                ],
+                                "properties": {
+                                    "conversation_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "receiver_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "example": "Hello, how are you?"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Message sent successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message sent successfully!"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Message"
+                                        },
+                                        "receiver_Name": {
+                                            "type": "string",
+                                            "example": "receiver_username"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "404": {
+                        "description": "Receiver or conversation not found"
+                    }
+                }
+            }
+        },
+        "/api/messages/seen": {
+            "post": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Mark all messages as seen",
+                "description": "Mark all received messages as seen for the authenticated user.",
+                "operationId": "bc010bc5c34f8ada02dc76eb95dbc757",
+                "responses": {
+                    "200": {
+                        "description": "All received messages marked as seen.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "All received messages marked as seen."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No messages found for this user"
+                    }
+                }
+            }
+        },
+        "/api/users/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "User registration",
+                "operationId": "registerUser",
+                "requestBody": {
+                    "description": "Submit the registration data using a form.",
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "username",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "username": {
+                                        "description": "The username of the user.",
+                                        "type": "string",
+                                        "example": "john_doe"
+                                    },
+                                    "email": {
+                                        "description": "The user's email address.",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "description": "The user's password.",
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "description": "Confirm the user's password.",
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "acces_token": {
+                                            "type": "string",
+                                            "example": "your_access_token_here"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Message": {
+                "required": [
+                    "id",
+                    "sender_id",
+                    "receiver_id",
+                    "content",
+                    "created_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The unique identifier of the message.",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "sender_id": {
+                        "description": "The ID of the user who sent the message.",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "receiver_id": {
+                        "description": "The ID of the user who received the message.",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "content": {
+                        "description": "The content of the message.",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "The time when the message was created.",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "read_at": {
+                        "description": "The time when the message was read.",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "API Endpoints for user authentication"
+        },
+        {
+            "name": "Messages",
+            "description": "Messages"
+        }
+    ],
+    "security": [
+        {
+            "sanctum": []
+        }
+    ]
+}
